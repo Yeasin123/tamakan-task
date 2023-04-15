@@ -26,10 +26,10 @@
                      <div class="col-md-6">
                       <div class="form-group">
                         <label >Category Name</label>
-                         <select name="category_id" class="form-control">
+                         <select name="category" class="form-control">
                            <option>Choose Category</option>
                            @foreach ($categorys as $category)
-                              <option value="{{$category->id}}">{{$category->name}}</option> 
+                              <option value="{{$category->name}}">{{$category->name}}</option> 
                            @endforeach
                          </select>
                       </div>
@@ -39,10 +39,10 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label >Brand Name</label>
-                         <select name="brand_id" class="form-control">
+                         <select name="brand" class="form-control">
                            <option value="">Choose Brand</option>
                            @foreach ($brands as $brand)
-                               <option value="{{$brand->id}}">{{$brand->name}}</option>
+                               <option value="{{$brand->name}}">{{$brand->name}}</option>
                            @endforeach
                          </select>
                            <p class="em text-danger" id="errbrand"></p>

@@ -38,10 +38,11 @@ class AdminLoginController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:admins',
-            'phone' => 'required|unique:admins',
+            'phone' => 'required|numeric|digits:11|unique:admins',
             'password' => 'required|min:8'
         ]);
 
+        session()->put('adminEmail', $request->email);
         $randStr = Str::random(20);
 
         // second, generate a token
@@ -53,15 +54,17 @@ class AdminLoginController extends Controller
         $admin->verification_token = $token;
         $admin->password = bcrypt($request->password);
         $admin->save();
-        session()->put('adminEmail',$request->email);
+
         $this->sendVerificationMail($request, $token);
+        Auth::guard('admin')->logout();
         return redirect()->back();
     }
 
     public function signupVerify(Request $request, $token)
     {
+
         try {
-            $admin = Admin::where('verification_token', $token)->where('email', session()->get('adminEmail'))->firstOrFail();
+            $admin = Admin::where('verification_token', $token)->firstOrFail();
             // after verify admin email, put "null" in the "verification token"
             $admin->update([
                 'email_verified_at' => date('Y-m-d H:i:s'),
@@ -70,6 +73,7 @@ class AdminLoginController extends Controller
 
             $request->session()->flash('success', 'Your email has verified.');
 
+            session()->forget('adminEmail');
             // after email verification, authenticate this user
             Auth::guard('admin')->login($admin);
 
@@ -115,13 +119,13 @@ class AdminLoginController extends Controller
 
     public function adminLogin(Request $request)
     {
-      
+
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:8'
         ]);
 
-       
+
         $credentials = $request->only('email', 'password');
 
         // login attempt
@@ -136,14 +140,13 @@ class AdminLoginController extends Controller
                 Auth::guard('admin')->logout();
 
                 return redirect()->back();
-            }else{
-                 return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('admin.dashboard');
             }
-        
-        }else{
-             return redirect()->back()->with('errorLogin','Credentails not match');
+        } else {
+            return redirect()->back()->with('errorLogin', 'Credentails not match');
         }
-  }
+    }
 
     public function resetPassword()
     {
@@ -180,16 +183,14 @@ class AdminLoginController extends Controller
             $mail->Body = $link;
 
             $mail->send();
-            session()->put('userEmail',$request->email);
+            session()->put('userEmail', $request->email);
             $request->session()->flash('success', 'A mail has been sent to your email address with reset password link');
-            
         } catch (Exception $e) {
-            
+
             session()->flash('error', 'Mail could not be sent!');
             return redirect()->back()->with('success');
         }
         return redirect()->back()->with('success');
-
     }
 
     public function resetPasswordSubmit(Request $request)
@@ -198,10 +199,12 @@ class AdminLoginController extends Controller
         $emailAddress = $request->session()->get('userEmail');
 
         $this->validate(
-            $request,[
-            'new_password' => 'required|confirmed|min:8',
-            'new_password_confirmation' => 'required'  
-        ]);
+            $request,
+            [
+                'new_password' => 'required|confirmed|min:8',
+                'new_password_confirmation' => 'required'
+            ]
+        );
 
 
         $user = Admin::where('email', $emailAddress)->first();
@@ -214,5 +217,4 @@ class AdminLoginController extends Controller
 
         return redirect()->route('adminLoginForm')->with('success');
     }
- 
 }

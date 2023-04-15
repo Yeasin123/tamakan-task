@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -66,23 +67,41 @@ class ProductController extends Controller
         $product->discountPercentage = $request->discountPercentage;
 
 
-        if($request->hasFile('thumbnail')){
-            $imageOne = rand().'.'.$request->thumbnail->getClientOriginalExtension();
-            $request->thumbnail->move(public_path('/images/product/'), $imageOne);
-            $product->thumbnail = $imageOne;
+        if ($request->hasFile('thumbnail')) {
+
+            $thumbnailUrl = $request->thumbnail;
+            // Generate a unique filename for the thumbnail image
+            $filename = uniqid() . '.' . pathinfo(
+                $thumbnailUrl,
+                PATHINFO_EXTENSION
+            );
+
+            // Download the image and store it in the public folder using the Storage facade
+            Storage::put('/public/images/product/' . $filename, file_get_contents($thumbnailUrl));
+            file_put_contents(public_path('/images/product/' . $filename), file_get_contents($thumbnailUrl));
+
+            // Save the filename to the database
+            $product->update(['thumbnail' => $filename]);
         }
 
-        $imagedata= array();
-        if($files=$request->file('images'))
-            {
-                foreach($files as $image)
-                {
-                    $gallery_image=rand().'.'.$image->getClientOriginalExtension();
-                    $image->move(public_path('/images/product/'), $gallery_image);
-                    $imagedata[] = $gallery_image;
-                }
+        $imagedata = array();
+        if ($files = $request->file('images')) {
+           
+            foreach ($files as $image) {
+                $imageUrl = $image;
 
+                // Generate a unique filename for the thumbnail image
+                $filename = uniqid() . '.' . pathinfo($imageUrl, PATHINFO_EXTENSION);
+
+                // Download the image and store it in the public folder using the Storage facade
+                Storage::put('/public/images/product/' . $filename, file_get_contents($imageUrl));
+                file_put_contents(public_path('/images/product/' . $filename), file_get_contents($imageUrl));
+
+                // Save the filename to the database
+                $imagedata[] = $filename;
+               
             }
+        }
             $product->images=json_encode($imagedata);
 
  

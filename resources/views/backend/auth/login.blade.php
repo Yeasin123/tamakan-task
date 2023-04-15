@@ -60,14 +60,14 @@
             @endif
             <div class="form-group">
                 <input type="text" class="form-control" name="email" placeholder="Enter your Email" required>
-                @error('email')
+               @error('email')
                <div class="alert alert-danger">{{ $message }}</div>
                @enderror
-              </div><!-- form-group -->
+              </div>
               <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
                 <a href="{{route('admin.forget_password')}}" class="tx-info tx-12 d-block mg-t-10">Forgot password?</a>
-              </div><!-- form-group -->
+              </div>
               <button type="submit" style="cursor:pointer" class="btn btn-info btn-block">Sign In</button>
         </form>
 

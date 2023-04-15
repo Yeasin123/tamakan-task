@@ -4,8 +4,57 @@
 
 <div class="sl-pagebody">
 
-  
-   
+    <div class="row row-sm">
+
+      <div class="col-sm-6 col-xl-3">
+        <div class="card pd-20 bg-primary">
+          <div class="d-flex justify-content-between align-items-center mg-b-10">
+            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white">All Orders</h6>
+           
+          </div><!-- card-header -->
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mg-b-0 tx-white tx-lato tx-bold">{{$orders->count()}}</h3>
+          </div><!-- card-body -->
+        </div>
+      </div>
+      
+      <div class="col-sm-6 col-xl-3">
+        <div class="card pd-20 bg-warning">
+          <div class="d-flex justify-content-between align-items-center mg-b-10">
+            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white">Pending Orders</h6>
+            
+          </div><!-- card-header -->
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mg-b-0 tx-white tx-lato tx-bold">{{$pendingOrders->count()}}</h3>
+          </div><!-- card-body -->
+        </div>
+      </div>
+        <div class="col-sm-6 col-xl-3">
+        <div class="card pd-20 bg-success">
+          <div class="d-flex justify-content-between align-items-center mg-b-10">
+            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white">Completed Orders</h6>
+           
+          </div><!-- card-header -->
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mg-b-0 tx-white tx-lato tx-bold">{{$completedOrders->count()}}</h3>
+          </div><!-- card-body -->
+        </div>
+      </div>
+        <div class="col-sm-6 col-xl-3">
+        <div class="card pd-20 bg-danger">
+          <div class="d-flex justify-content-between align-items-center mg-b-10">
+            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white">Cancled Orders</h6>
+           
+          </div><!-- card-header -->
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mg-b-0 tx-white tx-lato tx-bold">{{$canceledOrders->count()}}</h3>
+          </div><!-- card-body -->
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
 
   @endsection

@@ -26,7 +26,7 @@ class UserHomeController extends Controller
     {
         
         try {
-            $user = User::where('verification_token', $token)->where('email', session()->get('userEmail'))->firstOrFail();
+            $user = User::where('verification_token', $token)->firstOrFail();
             // after verify user email, put "null" in the "verification token"
             $user->update([
                 'email_verified_at' => date('Y-m-d H:i:s'),
@@ -45,12 +45,51 @@ class UserHomeController extends Controller
         }
     }
 
+    public function userLoginForm()
+    {
+        return view('frontend.login');
+    }
+
+    public function UserLogin(Request $request)
+    {
+
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        $credentials = $request->only('email', 'password');
+        $user = User::where('email',$request->email);
+       
+        if($user->count() == 0){
+
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        // Attempt to authenticate the user
+        if (Auth::guard('web')->attempt($credentials)) {
+            $authweb = Auth::guard('web')->user();
+
+            // Check whether the user's email address is verified or not
+            if ($authweb->email_verified_at == null) {
+                $request->session()->flash('error', 'Please verify your email address.');
+
+                // Logout authenticated user if the condition is not satisfied
+                Auth::guard('web')->logout();
+
+                return redirect()->back();
+            } else {
+                return redirect()->route('userProfile');
+            }
+        }
+        
+    }
+
     public function storeProduct()
     {
-        $response = Http::get('https://dummyjson.com/products');
-        $data = $response->json();
+        // $response = Http::get('https://dummyjson.com/products');
+        // $data = $response->json();
 
-        return response()->json($data);
+        // // return response()->json($data);
 
         // foreach ($data['products'] as $productData) {
 

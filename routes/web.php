@@ -53,14 +53,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function(){
     // Route::resource('product','App\Http\Controllers\Backend\ProductController');
     Route::resource('product', 'App\Http\Controllers\Backend\ProductController');
     
-    // Ajax use for subcategory
-    Route::get('/get/subcategory/{category_id}','App\Http\Controllers\Backend\ProductController@getSubcategory');
-    Route::get('/get/childcategory/{subcategory_id}','App\Http\Controllers\Backend\ProductController@getChildCategory');
 
     Route::get('/activeStatus/{id}','App\Http\Controllers\Backend\ProductController@activeStatus')->name('activeStatus');
     Route::get('/inactiveStatus/{id}','App\Http\Controllers\Backend\ProductController@inactiveStatus')->name('inactiveStatus');
 
-    Route::get('newslater/get','App\Http\Controllers\Backend\NewslaterController@newslater')->name('admin.newslater');
     //Order management
     Route::get('pendding/order','App\Http\Controllers\Backend\OrderController@newOrder')->name('new.order');
     Route::get('payment/accept/order/','App\Http\Controllers\Backend\OrderController@acceptOrder')->name('payment.accept');
@@ -88,7 +84,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function(){
     Route::get('report/search/by/year','App\Http\Controllers\Backend\OrderReportController@searchByYear')->name('searchbyear');
 
     //Stock Management
-    Route::get('stock/product/order','App\Http\Controllers\Backend\StcokController@test')->name('stockproduct');
+    Route::get('stock/product/order', 'App\Http\Controllers\Backend\StcokController@stockProduct')->name('stockproduct');
 
 
      
@@ -103,6 +99,8 @@ Route::get('/','App\Http\Controllers\Frontend\UserHomeController@userHome')->nam
 Route::get('/test', 'App\Http\Controllers\Frontend\UserHomeController@storeProduct')->name('test');
 
 Route::get('/user/signup_verify/{token}', 'App\Http\Controllers\Frontend\UserHomeController@signupVerify')->name('user.signup.verify');
+Route::post('/user/login/submit', 'App\Http\Controllers\Frontend\UserHomeController@userLogin')->name('user.login.submit');
+Route::get('/user/login/', 'App\Http\Controllers\Frontend\UserHomeController@userLoginForm')->name('user.login');
 
 // Route::get('/home', 'HomeController@index')->name('home');
 

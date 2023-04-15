@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 class StcokController extends Controller
 {
-    public function Test()
+    public function stockProduct()
     {
         $products = Product::orderBy('id','desc')->get();
         return view('backend.pages.stockmenagement.deliveredstickorder',compact('products'));

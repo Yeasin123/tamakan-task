@@ -13,6 +13,22 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if ($errors->any())
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                      @else
+                       @if (isset($error))
+                         <div class="alert alert-info }}">
+                            {{ $error }}
+                        </div>
+                      @endif
+                    @endif
+                   
                       <div class="input-item">
                         <label for="user_identifier">Email</label>
                             <input  name="email" value="{{ old('email') }}" placeholder="Enter Your Email">

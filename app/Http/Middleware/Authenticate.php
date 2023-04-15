@@ -20,7 +20,7 @@ class Authenticate extends Middleware
                 return route('adminLoginForm');
             } else {
 
-                return route('login');
+                return route('user.login');
             }
         }
     }

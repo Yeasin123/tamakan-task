@@ -60,7 +60,7 @@
                     </li>
                     @else
                     <li class="signin-option"><a href="{{route('register')}}" >Register</a></li>
-                     <li class="signin-option"><a href="{{route('login')}}"></i>Login</a></li>
+                     <li class="signin-option"><a href="{{route('user.login')}}"></i>Login</a></li>
                      @endif
                 </ul>
             </div>

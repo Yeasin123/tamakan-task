@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\Order;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Models\Admin;
-use Session;
 use Illuminate\Support\Facades\Hash;
+use Session;
+
 class AdminController extends Controller
 {
     use AuthenticatesUsers;
@@ -21,7 +23,11 @@ class AdminController extends Controller
 
     public function adminDashboard()
     {
-        return view('backend.admin_dashboard');
+        $data['orders'] = Order::all();
+        $data['pendingOrders'] = Order::where('status',1);
+        $data['completedOrders'] = Order::where('status', 3);
+        $data['canceledOrders'] = Order::where('status', 4);
+        return view('backend.admin_dashboard',$data);
     }
 
     public function adminGet()

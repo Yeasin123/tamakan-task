@@ -74,7 +74,7 @@
                         <div class="col-md-6">
                             <div>
                                 <button type="submit" class="btn btn-success">Register</button>
-                                <p><a href="{{route('login')}}">Already register ?</a></p>
+                                <p><a href="{{route('user.login')}}">Already register ?</a></p>
                             </div>
                         </div>
                         </div>
