@@ -90,10 +90,7 @@ class RegisterController extends Controller
         return $user;
     }
 
-    public function sendVerificationMail(
-        $user,
-        $token
-    ) {
+    public function sendVerificationMail( $user, $token) {
 
 
         $link = '<a href=' . route('user.signup.verify', ['token' => $token]) . '>Click Here</a>';
@@ -110,8 +107,10 @@ class RegisterController extends Controller
 
         // finally, add other information and send the mail
         try {
+            
             $mail->setFrom(env('MAIL_FROM_ADDRESS'), 'Imran');
             $mail->addAddress($user->email, $user->name);
+            $mail->addReplyTo(env('MAIL_FROM_ADDRESS'), 'Iman');
             $mail->isHTML(true);
             $mail->Subject = 'Verify Email';
             $mail->Body = $link;
