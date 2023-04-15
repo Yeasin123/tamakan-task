@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Backend\AdminController;
-use App\Http\Controllers\Api\Frontend\ProfileController;
+use App\Http\Controllers\Api\Backend\ProductController;
+use App\Http\Controllers\Api\Frontend\OrderController;
 use App\Http\Controllers\Api\UersController;
 use App\Http\Controllers\Frontend\LocationController;
 use Illuminate\Http\Request;
@@ -35,11 +36,11 @@ Route::post('admin/login', [AdminController::class, 'login']);
 
 
 Route::middleware('auth:api')->group(function () {
-    
-    Route::get('user/profile', [ProfileController::class, 'userProfile'])->name('userProfile');
+
+    Route::get('user/order', [OrderController::class, 'index']);
 });
 
-Route::middleware('auth:admin-api')->group(function () {
+Route::middleware('auth:api-admin')->group(function () {
 
-    Route::get('user/profile/{id}', [ProfileController::class, 'index'])->name('userProfile');
+    Route::get('admin/all/product', [ProductController::class, 'index']);
 });

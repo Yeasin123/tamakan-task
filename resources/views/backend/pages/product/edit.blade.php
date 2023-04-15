@@ -60,7 +60,7 @@
                    
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label for="exampleFormControlFile1" >Discount %</label>
+                        <label for="exampleFormControlFile1" >Discount </label>
                         <input type="number" min="1"  class="form-control" value="{{$product->discountPercentage}}" name="discountPercentage">
                       </div>
                     </div>
@@ -100,8 +100,13 @@
                           <input type="file" id="file" class="custom-file-input" multiple onchange="readURL2(this)" name="images[]" multiple>
                           <span class="custom-file-control"></span>
                         </label>
-                      <div id="image-preview"></div>
-                      
+                       <div id="image-preview"></div>
+                      @foreach(json_decode($product->images) as $image)
+                    
+                        <div >
+                          <img src="{{asset('images/product/'.$image)}}" width="50" alt="">
+                        </div>
+                        @endforeach
                       </div>
                     </div>
                    </div>

@@ -11,7 +11,7 @@
                     <div class="col-sm-6 col-lg-4 col-xl-3 col-6" style="display: block;">
                         <div class="product-item">
                             <div class="product-thumb">
-                                <a href="{{route('productdetail',$maincatproduct->id)}}" ><img src="{{asset('storage/images/product/'.$maincatproduct->thumbnail)}}" alt="product"></a>
+                                <a href="{{route('productdetail',$maincatproduct->id)}}" ><img src="{{asset('images/product/'.$maincatproduct->thumbnail)}}" alt="product"></a>
                     
 
                             </div>

@@ -24,7 +24,7 @@ class AdminController extends Controller
     public function adminDashboard()
     {
         $data['orders'] = Order::all();
-        $data['pendingOrders'] = Order::where('status',1);
+        $data['pendingOrders'] = Order::where('status',0);
         $data['completedOrders'] = Order::where('status', 3);
         $data['canceledOrders'] = Order::where('status', 4);
         return view('backend.admin_dashboard',$data);

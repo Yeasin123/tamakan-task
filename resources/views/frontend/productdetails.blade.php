@@ -7,12 +7,12 @@
                     <div class="col-lg-6">
                         <div class="product-zoom-area">
                             <div>
-                                <img src="{{asset('storage/images/product/'.$product->thumbnail)}}" alt="">
+                                <img src="{{asset('images/product/'.$product->thumbnail)}}" alt="">
                             </div>
                             <div class="d-flext align-items-center justify-content-between mt-4">
                                 @foreach(json_decode($product->images) as $img)
                                 <div class=" p-3">
-                                    <img src="{{asset('storage/images/product/'.$img)}}" width="75" alt="">
+                                    <img src="{{asset('images/product/'.$img)}}" width="75" alt="">
                                 </div>
                                 @endforeach
                             </div>

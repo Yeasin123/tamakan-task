@@ -58,7 +58,7 @@
                    
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label >Discount %</label>
+                        <label >Discount</label>
                         <input type="number" min="1"  class="form-control" name="discountPercentage">
                       </div>
                       <p class="em text-danger" id="errdiscountPercentage"></p>

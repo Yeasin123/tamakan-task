@@ -5,7 +5,7 @@
             <div class="card">
                 @foreach ($searchItems as $searchItem)
                     <div class="list border-bottom">
-                        <div class="d-flex flex-column ml-3"> <a href="{{route('productdetail',$searchItem->slug)}}"><p><img src="{{asset('images/product/'. $searchItem->image_one)}}" alt="">  <span>{{$searchItem->product_name}} </span></p></a>  </div>
+                        <div class="d-flex flex-column ml-3"> <a href="{{route('productdetail',$searchItem->id)}}"><p><img src="{{asset('images/product/'. $searchItem->thumbnail)}}" alt="">  <span>{{$searchItem->title}} </span></p></a>  </div>
                     </div>
                 @endforeach
                 

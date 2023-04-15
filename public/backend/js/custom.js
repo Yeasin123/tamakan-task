@@ -133,7 +133,7 @@ $(function ($) {
                     $(this).html("");
                 });
                 for (let x in error.responseJSON.errors) {
-                  console.log(error.responseJSON.errors);
+                 
                     document.getElementById("err" + x).innerHTML =
                         error.responseJSON.errors[x][0];
                 }

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class OrderController extends Controller
 {
     public function index()
     {
-        return response()->json(Auth::guard('web')->user());
+        $products = Product::all();
+        return response()->json($products);
     }
 }

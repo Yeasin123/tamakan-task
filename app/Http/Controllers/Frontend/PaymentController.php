@@ -29,14 +29,8 @@ class PaymentController extends Controller
     public function stripePage(Request $request)
     {
       
-        if($request->payment == 'stripe')
-        {
-            $data = $request->all();
-            return view('frontend.payment.stripe',compact('data'));
-        }
-        
-
-        elseif($request->payment == 'cash'){
+       
+        if($request->payment == 'cash'){
 
          $user = Auth::user()->id;
          $total = Cart::total();
@@ -107,8 +101,13 @@ class PaymentController extends Controller
             );
             return redirect()->route('userHome')->with($notification);
        
-        
-    
+    }else{
+
+            $notification = array(
+                'message' => 'Please Choose Cash On Delivery',
+                'alert-type' => 'warning'
+            );
+            return redirect()->back()->with($notification);
     }
 
     }

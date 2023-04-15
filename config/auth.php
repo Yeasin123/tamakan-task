@@ -52,7 +52,7 @@ return [
             'hash' => false,
         ],
 
-        'admin-api' => [
+        'api-admin' => [
             'driver' => 'passport',
             'provider' => 'admins',
             'hash' => false,

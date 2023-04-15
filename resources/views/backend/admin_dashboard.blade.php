@@ -53,7 +53,56 @@
       </div>
     </div>
 
-
+  <div class="row row-sm mt-4">
+    <div class="col-lg-12">
+      <h3>Admin & User login,Register Api Url </h3>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+        <div class="card-header">
+          User Login & Register Api Link
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Register</th>
+                <td>  BaseUrl + 'api/register' the method should be Post Request</td>
+              </tr>
+               <tr>
+                <th>Login</th>
+                <td>  BaseUrl + 'api/login' the method should be Post Request</td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card">
+        <div class="card-header">
+          Admin Login & Register Api Link
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th col="scope">Register </th>
+                <td> BaseUrl + 'api/admin/register' the method should be Post Request</td>
+              </tr>
+               <tr>
+                <th col="scope">Login </th>
+                <td> BaseUrl + 'api/admin/login' the method should be Post Request</td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
   </div>
 

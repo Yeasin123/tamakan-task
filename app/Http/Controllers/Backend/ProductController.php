@@ -34,6 +34,8 @@ class ProductController extends Controller
             'thumbnail' => 'required',
             'images' => 'required',
             'description' => 'required',
+            'discountPercentage' => 'required',
+            'rating' => 'required',
 
         ];
         $messages = [
@@ -45,6 +47,8 @@ class ProductController extends Controller
             'thumbnail.required' => 'The thumbnail is required',
             'images.required' => 'The thumbnail is required',
             'description.required' => 'The description is required',
+            'discountPercentage.required' => 'The Discount  is required',
+            'rating.required' => 'The rating  is required',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -68,43 +72,21 @@ class ProductController extends Controller
 
 
         if ($request->hasFile('thumbnail')) {
-
-            $thumbnailUrl = $request->thumbnail;
-            // Generate a unique filename for the thumbnail image
-            $filename = uniqid() . '.' . pathinfo(
-                $thumbnailUrl,
-                PATHINFO_EXTENSION
-            );
-
-            // Download the image and store it in the public folder using the Storage facade
-            Storage::put('/public/images/product/' . $filename, file_get_contents($thumbnailUrl));
-            file_put_contents(public_path('/images/product/' . $filename), file_get_contents($thumbnailUrl));
-
-            // Save the filename to the database
-            $product->update(['thumbnail' => $filename]);
+            $thumbnail = $request->file('thumbnail');
+            $filename = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
+            $thumbnail->move(public_path('images/product'), $filename);
+            $product->thumbnail = $filename;
         }
 
         $imagedata = array();
         if ($files = $request->file('images')) {
-           
             foreach ($files as $image) {
-                $imageUrl = $image;
-
-                // Generate a unique filename for the thumbnail image
-                $filename = uniqid() . '.' . pathinfo($imageUrl, PATHINFO_EXTENSION);
-
-                // Download the image and store it in the public folder using the Storage facade
-                Storage::put('/public/images/product/' . $filename, file_get_contents($imageUrl));
-                file_put_contents(public_path('/images/product/' . $filename), file_get_contents($imageUrl));
-
-                // Save the filename to the database
+                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/product'), $filename);
                 $imagedata[] = $filename;
-               
             }
         }
-            $product->images=json_encode($imagedata);
-
- 
+        $product->images = json_encode($imagedata);
         $product->save();
 
         $request->session()->flash('success', 'Brand Insert Succesfuslly');
@@ -123,75 +105,86 @@ class ProductController extends Controller
         
     }
 
-  
+
     public function update(Request $request, $id)
     {
+        $rules = [
+            'title' => 'required',
+            'stock' => 'required',
+            'price' => 'required',
+            'category' => 'required',
+            'brand' => 'required',
+            'description' => 'required',
+            'discountPercentage' => 'required',
+            'rating' => 'required',
+
+        ];
+        $messages = [
+            'title.required' => 'The title is required',
+            'stock.required' => 'The stock is required',
+            'price.required' => 'The price is required',
+            'category.required' => 'The category is required',
+            'brand.required' => 'The brand is required',
+
+            'description.required' => 'The description is required',
+            'discountPercentage.required' => 'The Discount  is required',
+            'rating.required' => 'The rating  is required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return Response::json([
+                'errors' => $validator->getMessageBag()->toArray()
+            ], 400);
+        }
         $product = Product::find($id);
 
-        $product->product_name = $request->product_name;
-        $product->slug = Str::slug($request->product_name);
-        $product->category_id  = $request->category_id ;
-        $product->brand_id  = $request->brand_id ;
-        $product->product_tags  = $request->product_tags ;
-        $product->product_code = 'TechByte'.rand(10000,99999);
-        $product->product_quantity = $request->product_quantity;
-        $product->product_detials = $request->product_detials;
-        $product->product_color = $request->product_color;
-        $product->product_size = $request->product_size;
-        $product->buying_price = $request->buying_price;
-        $product->selling_price = $request->selling_price;
-        $product->discount_price = $request->discount_price;
-        $product->video_link = $request->video_link;
-        $product->main_slider = $request->main_slider;
-        $product->mid_slider = $request->mid_slider;
-        $product->hot_deals = $request->hot_deals;
-        $product->hot_new = $request->hot_new;
-        $product->trend = $request->trend;
-        $product->best_rated = $request->best_rated;
+        $product->title = $request->title;
+        $product->category  = $request->category;
+        $product->brand  = $request->brand;
+        $product->stock = $request->stock;
+        $product->price = $request->price;
+        $product->rating = $request->rating;
+        $product->description = $request->description;
+        $product->discountPercentage = $request->discountPercentage;
 
-        if($request->hasFile('image_one')){
-            unlink(public_path('images/product/'.$product->image_one));
-            $imageOne = rand().'.'.$request->image_one->getClientOriginalExtension();
-            $request->image_one->move(public_path('/images/product/'), $imageOne);
-            $product->image_one = $imageOne;
+        if ($request->hasFile('thumbnail')) {
+
+            unlink(public_path('images/product/' . $product->thumbnail));
+
+            $thumbnail = $request->file('thumbnail');
+            $filename = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
+            $thumbnail->move(public_path('images/product'), $filename);
+            $product->thumbnail = $filename;
+        } else {
+            $product->thumbnail = $product->thumbnail;
         }
 
-            $imagedata = array();
-            if($request->hasFile('gellary_img'))
-            {
-                if(!empty($product->gellary_img)){
+        $imagedata = array();
+        if ($files = $request->file('images')) {
 
-                    foreach (json_decode($product->gellary_img) as $gimage) {
-                        unlink(public_path('/images/product/'.$gimage));
-                      }
-                }
-                foreach($request->file('gellary_img') as $image)
-                {
-                    $gallery_image=rand().'.'.$image->getClientOriginalExtension();
-                    $image->move(public_path('/images/product/'),$gallery_image);
-                    $imagedata[] = $gallery_image;
-                }
+            if (!empty($product->images)) {
 
-                $product->gellary_img=json_encode($imagedata);
+                foreach (json_decode($product->images) as $gimage) {
+                    unlink(public_path('/images/product/' . $gimage));
+                }
             }
-            else{
-                $product->gellary_img = $product->gallery_image;
+
+            foreach ($files as $image) {
+                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/product'), $filename);
+                $imagedata[] = $filename;
             }
-        
+        }
+
+
         $product->update();
         $notification = array(
             'message' => ' Product Updated successfully',
             'alert-type' => 'success'
         );
         return redirect()->route('product.index')->with($notification);
-    //    }
-    //    else{
-    //     $notification = array(
-    //         'message' => ' Something went wrong',
-    //         'alert-type' => 'error'
-    //     );
-    //     return redirect()->back()->with($notification);
-    //    }
     }
 
   
